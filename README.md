@@ -1,5 +1,5 @@
 # slides-fit-fill-image
-Google Apps Script add-on for Slides that fits or fills a selected image to the maximum size on a slide. 
+[Google Apps Script](https://developers.google.com/apps-script/reference/slides) add-on for Slides that fits or fills a selected image to the maximum size on a slide. 
 
 ![](https://github.com/chris-p-schneider/slides-fit-fill-image/blob/main/Peek%202022-07-28%2023-58.gif)
 
