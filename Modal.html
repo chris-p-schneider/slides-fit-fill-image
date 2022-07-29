@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!---------------------------------------------------->
+    <!-- Add CSS.html -->
+    <?!= include('CSS'); ?>
+    <script>
+      // execute here to reduce image preview loading time
+
+      // set image content url as src for image previews
+      function onSuccessImageUrl(imgContentUrl) {
+        for (i = 0; i < (previewElements.length - 3); i++) {
+          document.getElementById(previewElements[i]).src = imgContentUrl;
+        }
+      }
+      // call gs to send preview image url
+      google.script.run.withSuccessHandler(onSuccessImageUrl).sendImageUrl();
+    </script>
+    <!---------------------------------------------------->
+  </head>
+    <body>
+    <!---------------------------------------------------->
+    <div id="protector" class="hidden">&nbsp;</div>
+    <!---------------------------------------------------->
+    <!--TOP ROW-->
+    <div id="row_top" class="dialog_row">
+
+      <!--DIALOG TEXT-->
+      <div id="dialog_text" class="dialog_column_a">
+
+        <p>Select an option to resize the selected image.</p>
+
+        <div class="option_container">
+          <label class="switch">
+            <input id="sliderInsertNew" type="checkbox">
+            <span class="slider"></span>
+          </label>
+          &nbsp;<span class="option_span">Insert to new slide</span>
+        </div>
+
+      </div> <!--/dialog_column_a-->
+
+      <!--FIT-->
+      <div id="dialog_fill" class="dialog_column_b">
+
+        <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+          id="preview_fit" alt="Preview of Image Filled to Slide" class="full fit"
+          onclick="runImageProcess(this.id)">
+        <p class="caption">Keep Aspect Ratio (Fit)</p>
+
+      </div> <!--/dialog_column_b-->
+
+      <!--FILL-->
+      <div id="dialog_fit" class="dialog_column_c">
+
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_fill" alt="Preview of Image Fit to Slide" class="full fill"
+            onclick="runImageProcess(this.id)">
+        <p class="caption">Crop to Fill Slide</p>
+
+      </div> <!--/dialog_column_c-->
+    </div> <!--/dialog_row-->
+
+    <!---------------------------------------------------->
+    <!--BOTTOM ROW-->
+    <div id="row_bottom" class="dialog_row">
+
+      <!--CROP PORTRAIT-->
+      <div id="dialog_portrait" class="dialog_column_a">
+
+        <div class="container_portrait">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_portrait_left" alt="Left Preview of Image Fit to Half of Slide" class="portrait"
+            onclick="runImageProcess(this.id)">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_portrait_right" alt="Right Preview of Image Fit to Half of Slide" class="portrait"
+            onclick="runImageProcess(this.id)">
+        </div>
+
+        <p class="caption caption_process" id="caption_portrait"
+          onmouseover="previewHighlight(this.id)" onmouseout="previewLowlight(this.id)"
+          onclick="runImageProcess(this.id)">Crop to Fill Half (Portrait)</p>
+
+      </div> <!--/dialog_column_a-->
+
+      <!--CROP LANDSCAPE-->
+      <div id="dialog_landscape" class="dialog_column_b">
+
+        <div class="container_landscape">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_landscape_top" alt="Top Preview of Image Fit to Half of Slide" class="landscape"
+            onclick="runImageProcess(this.id)">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_landscape_bottom" alt="Bottom Preview of Image Fit to Half of Slide" class="landscape"
+            onclick="runImageProcess(this.id)">
+        </div>
+
+        <p class="caption caption_process" id="caption_landscape"
+          onmouseover="previewHighlight(this.id)" onmouseout="previewLowlight(this.id)" 
+          onclick="runImageProcess(this.id)">Crop to Fill Half (Landscape)</p>
+
+      </div> <!--/dialog_column_b-->
+
+      <!--CROP QUARTER-->
+      <div id="dialog_quarter" class="dialog_column_c">
+
+        <div class="container_quarter">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_quarter_top_left" alt="Top Left Preview of Image Fit to Quarter of Slide" class="quarter"
+            onclick="runImageProcess(this.id)">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_quarter_top_right"alt="Top Right Preview of Image Fit to Quarter of Slide" class="quarter"
+            onclick="runImageProcess(this.id)">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_quarter_bottom_left" alt="Bottom Left Preview of Image Fit to Quarter of Slide" class="quarter"
+            onclick="runImageProcess(this.id)">
+          <img src="https://i.giphy.com/media/vCUjNFrZOW7kjl9fEO/giphy.gif"
+            id="preview_quarter_bottom_right"alt="Bottom Right Preview of Image Fit to Quarter of Slide" class="quarter"
+            onclick="runImageProcess(this.id)">
+        </div>
+
+        <p class="caption caption_process" id="caption_quarters"
+          onmouseover="previewHighlight(this.id)" onmouseout="previewLowlight(this.id)"
+          onclick="runImageProcess(this.id)">Crop to Fill Quarter</p>
+
+      </div> <!--/dialog_column_c-->
+    </div> <!--/dialog_row-->
+    <!---------------------------------------------------->
+    <!-- Add JS.html -->
+    <?!= include('JS'); ?>
+    <!---------------------------------------------------->
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<script>
+
+///////////////////////////////////////////////////////////////////////////
+/* HTML element constants */
+///////////////////////////////////////////////////////////////////////////
+
+// slider id
+const sliderInsertNew = document.getElementById("sliderInsertNew");
+
+// preview image ids
+const previewElements = [
+  "preview_fit",
+  "preview_fill",
+  "preview_portrait_left",
+  "preview_portrait_right",
+  "preview_landscape_top",
+  "preview_landscape_bottom",
+  "preview_quarter_top_left",
+  "preview_quarter_top_right",
+  "preview_quarter_bottom_left",
+  "preview_quarter_bottom_right",
+  "caption_portrait",
+  "caption_landscape",
+  "caption_quarters"
+];
+
+///////////////////////////////////////////////////////////////////////////
+/* MODAL UI SCRIPTS */
+///////////////////////////////////////////////////////////////////////////
+
+// highlight image previews when mousing over text descriptor
+function previewHighlight(captionId) {
+  var index = previewElements.indexOf(captionId);
+
+  if (index == 10) {
+    document.getElementById("preview_portrait_left").style.opacity = 1.0;
+    document.getElementById("preview_portrait_right").style.opacity = 1.0;
+  }
+  else if (index == 11) {
+    document.getElementById("preview_landscape_top").style.opacity = 1.0;
+    document.getElementById("preview_landscape_bottom").style.opacity = 1.0;    
+  }
+  else if (index == 12) {
+    document.getElementById("preview_quarter_top_left").style.opacity = 1.0;
+    document.getElementById("preview_quarter_top_right").style.opacity = 1.0;
+    document.getElementById("preview_quarter_bottom_right").style.opacity = 1.0;
+    document.getElementById("preview_quarter_bottom_left").style.opacity = 1.0;    
+  }
+  else {
+    console.log("caption index error.");
+  }
+}
+
+// un-highlights image previews when mousing out from text descriptor
+function previewLowlight(captionId) {
+  var index = previewElements.indexOf(captionId);
+
+  if (index == 10) {
+    document.getElementById("preview_portrait_left").removeAttribute("style");
+    document.getElementById("preview_portrait_right").removeAttribute("style");
+  }
+  else if (index == 11) {
+    document.getElementById("preview_landscape_top").removeAttribute("style");
+    document.getElementById("preview_landscape_bottom").removeAttribute("style");    
+  }
+  else if (index == 12) {
+    document.getElementById("preview_quarter_top_left").removeAttribute("style");
+    document.getElementById("preview_quarter_top_right").removeAttribute("style");
+    document.getElementById("preview_quarter_bottom_right").removeAttribute("style");
+    document.getElementById("preview_quarter_bottom_left").removeAttribute("style");    
+  }
+  else {
+    console.log("caption index error.");
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////
+/* IMAGE PROCESS FUNCTIONS */
+///////////////////////////////////////////////////////////////////////////
+
+// close modal ui on success of image process call
+function onSuccessImageProcess() {
+  document.body.style.cursor = "default";
+  google.script.host.close();
+  console.log("closed host: ");
+}
+
+// call gs to run image process and close modal
+function runImageProcess(imageId) {
+
+  document.body.style.cursor = "wait"; // placeholder until css animations added
+  document.getElementById("protector").classList.remove("hidden"); // blocks multiple calls to gs functions
+
+  var index = previewElements.indexOf(imageId);
+  console.log("index: " + index);
+
+  if (index == 0) {
+    console.log("executing fit");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFitImage(sliderInsertNew.checked);
+  } 
+  else if (index == 1) {
+    console.log("executing fill");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFillImage(sliderInsertNew.checked);
+  }
+  else if (index < 4) {
+    console.log("executing fill given portrait");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFillPortraitImages(sliderInsertNew.checked, index);
+  }
+  else if (index < 6) {
+    console.log("executing fill given landscape");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFillLandscapeImages(sliderInsertNew.checked, index);
+  }
+  else if (index < 10) {
+    console.log("executing fill given quarter");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFillQuarterImages(sliderInsertNew.checked, index);
+  }
+  else if (index == 10) {
+    console.log("executing fill both portrait");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFillPortraitImages(sliderInsertNew.checked, index);    
+  }
+  else if (index == 11) {
+    console.log("executing fill both landscape");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFillLandscapeImages(sliderInsertNew.checked, index);    
+  }
+  else if (index == 12) {
+    console.log("executing fill all quarters");
+    google.script.run.withSuccessHandler(onSuccessImageProcess).runFillQuarterImages(sliderInsertNew.checked, index);    
+  }
+  else {
+    console.log("image index error");    
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+</script>

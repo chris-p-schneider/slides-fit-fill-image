@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<style>
+
+  //////////////////////////////////////////////////////////////
+  /* TESTING */
+  //////////////////////////////////////////////////////////////
+  
+  div {
+    border: 0px solid blue;
+  }
+  .hidden {
+    display: none;
+  }
+
+  //////////////////////////////////////////////////////////////
+  /* GLOBAL */
+  //////////////////////////////////////////////////////////////
+  
+  html { // no select
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+  p {
+    line-height: 1;
+    margin: 0px;
+  }
+
+  //////////////////////////////////////////////////////////////
+  /* STRUCTURE */
+  //////////////////////////////////////////////////////////////
+  
+  .dialog_row { // flex container for 3 columns; 2 rows
+    position: relative;
+    width: 100%;
+    height: calc(50% - 10px);
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+    // background-color: hsla(0, 100%, 67%, .5); // testing
+  }
+  .dialog_row > * { // for all columns
+    position: relative;
+    width: 33%;
+    height: 100%;
+    padding: 5px;
+    text-align: center;
+    border: 0px solid purple; // testing
+  }
+  .dialog_row > *:not(#dialog_text) { // for all preview columns
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #dialog_text { // for the text column
+    font-family: 'Roboto';
+    font-size: 16px;
+  }
+  #dialog_text p { // instructions
+    margin: 20px auto 15px auto;
+    font-weight: 300;
+  }
+  .option_container { // to align the slider and text
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
+    align-items: center;
+    gap: 5px 5px;
+  }
+  #dialog_text .option_span { // new slide option (slider text)
+    font-weight: 400;
+  }
+
+  .dialog_column_a { // flex item column - left
+    // background-color: hsla(50, 100%, 67%, .5); // testing
+  }
+  .dialog_column_b { // flex item column - center 
+    // background-color: hsla(100, 100%, 67%, .5); // testing
+  }
+  .dialog_column_c { // flex item column - right
+    // background-color: hsla(150, 100%, 67%, .5); // testing
+  }
+  
+
+  //////////////////////////////////////////////////////////////
+  /* BEHAVIOR */
+  //////////////////////////////////////////////////////////////
+
+  .full, .portrait, .landscape, .quarter { // highlight selected preview image
+    opacity: .7;
+    transition: opacity .17s ease-out;
+    -webkit-transition: opacity .17s ease-out;
+  }
+  .full:hover, .portrait:hover, .landscape:hover, .quarter:hover {
+    opacity: 1.0;
+  }
+
+  .caption_process:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  #protector { // hidden div to appear and block clicks
+    background-color: hsla(0, 80%, 80%, .0);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+  }
+
+  //////////////////////////////////////////////////////////////
+  /* ELEMENTS */
+  //////////////////////////////////////////////////////////////
+
+  .dialog_row > * img { // for all images in columns
+    position: relative;
+    background-color: hsla(200, 0%, 67%, 1.0); 
+    cursor: pointer;
+  }
+
+  .full { // proportional slide preview
+    width: 90%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 10px auto 10px auto;
+    border: 0px solid black; // testing only
+  }
+  .fit { // fit to container without cropping
+    object-fit: contain;
+  }
+  .fill { // fill to container with cropping
+    object-fit: cover;
+  } 
+
+  .container_portrait, .container_landscape, .container_quarter {
+    display: flex;
+    margin: 10px auto 10px auto;
+    border: 0px solid black; // testing
+    justify-content: center;
+    align-items: center;
+    gap: 0px 0px;
+  }
+
+  .container_portrait { // contains two portait image halves
+    flex-flow: row wrap;
+  }
+  .portrait {
+    display: inline-block;
+    width: 45%;
+    height: auto;
+    aspect-ratio: 8 / 9;
+    object-fit: cover;
+  }
+
+  .container_landscape { // contains two landscape image halves
+    flex-flow: column wrap;
+  }
+  .landscape {
+    display: inline-block;
+    width: 90%;
+    height: auto;
+    aspect-ratio: 16 / 4.5;
+    object-fit: cover; 
+  }
+
+  .container_quarter { // contains four image quarters
+    flex-flow: row wrap;
+  }
+  .quarter {
+    display: inline-block;
+    width: 45%;
+    height: auto;
+    aspect-ratio: 8 / 4.5;
+    object-fit: cover;
+  }
+
+  .caption { // text below image previews
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .caption_process { // caption to run process
+    //
+  }
+
+
+  //////////////////////////////////////////////////////////////
+  /* SLIDER */
+  //////////////////////////////////////////////////////////////
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 16px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: hsla(0, 0%, 80%, 1.0);
+    border-radius: 12px;
+    -webkit-transition: .3s;
+    transition: .3s;
+  }
+  .slider:before {
+    position: absolute;
+    content: ""; 
+    height: 12px;
+    width: 12px;
+    bottom: 2px;
+    left: 2px;
+    background-color: white;
+    border-radius: 50%;
+    -webkit-transition: .3s;
+    transition: .3s;        
+  }
+  input:checked + .slider {
+    background-color: hsla(0, 0%, 40%, 1.0);
+    }
+  input:focus + .slider {
+    box-shadow: 0 0 1px hsla(0, 0%, 30%, 1.0);
+    }
+  input:checked + .slider:before {
+    -webkit-transform: translateX(14px);
+    -ms-transform: translateX(14px);
+    transform: translateX(14px);
+  }
+
+  //////////////////////////////////////////////////////////////
+
+</style>
